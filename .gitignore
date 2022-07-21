@@ -1,0 +1,3 @@
+# Project exclude paths
+/jpa-h2-example/target/
+/.idea/
