@@ -1,0 +1,8 @@
+# minio 配置信息
+minio:
+  endpoint:
+  accessKey:
+  accessSecret:
+  defaultBucket: minioTestBucket
+  partSize: 10485760
+
