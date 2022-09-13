@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 
 /**
  * minio 操作工具类
+ *
  * @author hc
  * @date Created in 2022/9/3 22:06
  * @modified
@@ -182,11 +183,10 @@ public class MinioUtil {
      * @param bucketName 存储此文件的存储桶名称
      * @param inputStream 文件输入流
      * @param objectName 存储至minio中的对象名称
-     * @param contentType 文件类型
      * @return 是否上传成功
      */
     @SneakyThrows
-    public boolean putObject(String bucketName, InputStream inputStream, String objectName, String contentType) {
+    public boolean putObject(String bucketName, InputStream inputStream, String objectName) {
         boolean found = bucketExists(bucketName);
         if (!found && !makeBucket(bucketName)) {
             log.error("存储桶 {} 不存在，并且创建失败！", bucketName);
@@ -196,7 +196,6 @@ public class MinioUtil {
                 .bucket(bucketName)
                 .object(objectName)
                 .stream(inputStream, -1, minioConfig.getPartSize())
-                .contentType(contentType)
                 .build());
         StatObjectResponse statObjectResponse = statObject(bucketName, objectName);
         return statObjectResponse != null && statObjectResponse.size() > 0;
@@ -208,13 +207,30 @@ public class MinioUtil {
      * @param bucketName 存储此文件的存储桶名称
      * @param file 要上传的文件
      * @param objectName 存储至minio中的对象名称
-     * @param contentType 文件类型
      * @return 是否上传成功
      */
     @SneakyThrows
-    public boolean putObject(String bucketName, MultipartFile file, String objectName, String contentType) {
+    public boolean putObject(String bucketName, MultipartFile file, String objectName) {
         ByteArrayInputStream inputStream = new ByteArrayInputStream(file.getBytes());
-        return putObject(bucketName, inputStream, objectName, contentType);
+        return putObject(bucketName, inputStream, objectName);
+    }
+
+    /**
+     * 获取文件流
+     *
+     * @param bucketName 存储桶名称
+     * @param objectName 对象名称
+     * @return 对象输入流
+     */
+    @SneakyThrows
+    public InputStream getObject(String bucketName, String objectName) {
+        if (bucketExists(bucketName)) {
+            return minioClient.getObject(GetObjectArgs.builder()
+                    .bucket(bucketName)
+                    .object(objectName)
+                    .build());
+        }
+        return null;
     }
 
     /**
