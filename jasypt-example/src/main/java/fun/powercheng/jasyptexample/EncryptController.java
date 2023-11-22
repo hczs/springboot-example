@@ -25,6 +25,11 @@ public class EncryptController {
         return ResponseEntity.ok(stringEncryptor.encrypt(content));
     }
 
+    @GetMapping("/decrypt/{encryptedMessage}")
+    public ResponseEntity<String> decrypt(@PathVariable String encryptedMessage) {
+        return ResponseEntity.ok(stringEncryptor.decrypt(encryptedMessage));
+    }
+
     @GetMapping("/test/password")
     public ResponseEntity<String> getPwd() {
         return ResponseEntity.ok(pwd);
