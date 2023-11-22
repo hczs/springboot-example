@@ -1,0 +1,14 @@
+jasypt:
+  encryptor:
+    # 秘钥，必须配置
+    password: 123456
+    property:
+      # 可以自行配置密文的前缀和后缀 以下是默认配置
+      prefix: ENC(
+      suffix: )
+    # 加密算法，下面是默认的加密算法
+    algorithm: PBEWITHHMACSHA512ANDAES_256
+
+
+test:
+  password: ENC(UIYsP7yF8PUinZp8QAez4c0utELScYHckfhNXBqa3NjPX52KCCvat3NBBpVUhztS)
