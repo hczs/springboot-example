@@ -1,0 +1,8 @@
+spring:
+  cloud:
+    nacos:
+      config:
+        server-addr: 10.12.1.74:8848
+        file-extension: yml
+  application:
+    name: cloud-nacos-example
